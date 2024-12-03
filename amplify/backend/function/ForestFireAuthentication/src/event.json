@@ -1,0 +1,14 @@
+{
+  "resource": "/users/{userID}",
+  "path": "/users/praburam1451",
+  "httpMethod": "GET",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "pathParameters": {
+    "userID": "praburam1451"
+  },
+  "queryStringParameters": null,
+  "body": null,
+  "isBase64Encoded": false
+}
