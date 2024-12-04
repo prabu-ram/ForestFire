@@ -1,31 +1,26 @@
 import React, { useState } from 'react';
-import {  Amplify } from 'aws-amplify';
-import { API as api} from 'aws-amplify'
+import { Amplify } from 'aws-amplify';
+import { get } from 'aws-amplify/api';
 import { useNavigate } from 'react-router-dom';
 import awsExports from './aws-exports';
 
-Amplify.configure(awsExports); // Configure Amplify
+Amplify.configure(awsExports); 
 
 function LoginPage() {
-    const [userID, setUserID] = useState('');
+    const [userId, setUserID] = useState('');
     const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            // Make a GET request to the API endpoint using userID
-            const response = await api.get('apic1a4de00', `/users/${userID}`);
+            const response = await get('apic1a4de00', `/users/${userId}`);
             setMessage(response.message);
 
-            // Navigate to the dashboard page after successful authentication
+            // Navigating to the dashboard on successful login
             navigate('/dashboard', { state: { userName: response.name, role: response.role } });
         } catch (error) {
-            if (error.response) {
-                setMessage(error.response.data.message);
-            } else if (error.message) {
-                setMessage(error.message);
-            }
+            setMessage(error.response?.data?.message || error.message || 'An error occurred');
             console.error('Error during API request:', error);
         }
     };
@@ -37,7 +32,7 @@ function LoginPage() {
                 <input
                     type="text"
                     placeholder="User ID"
-                    value={userID}
+                    value={userId}
                     onChange={(e) => setUserID(e.target.value)}
                     required
                 />
